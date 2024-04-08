@@ -23,8 +23,13 @@ const MyInput = ({
   return (
     <Controller
       name={name}
-      render={({ field }) => (
-        <FormItem>
+      render={({ field, fieldState: { error } }) => (
+        <FormItem className="relative">
+          {error && (
+            <small className="absolute -top-5 right-1 text-red-600">
+              {error?.message}
+            </small>
+          )}
           <Input
             {...field}
             type={type}
