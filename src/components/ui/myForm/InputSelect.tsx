@@ -7,8 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Controller } from "react-hook-form";
-import { FormItem } from "../form";
+import { FormField, FormItem } from "../form";
 
 export type TOptionItem = {
   value: string;
@@ -22,16 +21,11 @@ export type TInputSelectProps = {
 
 const InputSelect = ({ name, options }: TInputSelectProps) => {
   return (
-    <Controller
+    <FormField
       name={name}
       render={({ field }) => (
-        <FormItem className="relative">
-          <Select
-            {...field}
-            onValueChange={(value) => {
-              console.log(value);
-            }}
-          >
+        <FormItem>
+          <Select onValueChange={field.onChange}>
             <SelectTrigger className="w-[280px]">
               <SelectValue placeholder="Select a timezone" />
             </SelectTrigger>
@@ -39,9 +33,7 @@ const InputSelect = ({ name, options }: TInputSelectProps) => {
               <SelectGroup>
                 <SelectLabel>North America</SelectLabel>
                 {options.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
+                  <SelectItem value={option.value}>{option.label}</SelectItem>
                 ))}
               </SelectGroup>
             </SelectContent>
