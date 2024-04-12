@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Controller } from "react-hook-form";
-import { FormItem } from "../form";
+import { FormField, FormItem } from "../form";
 import { Input } from "../input";
 
 interface TInputProps {
@@ -21,7 +20,7 @@ const MyInput = ({
   disabled,
 }: TInputProps) => {
   return (
-    <Controller
+    <FormField
       name={name}
       render={({ field, fieldState: { error } }) => (
         <FormItem className="relative">

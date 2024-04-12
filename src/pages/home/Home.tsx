@@ -3,8 +3,10 @@ import { FieldValues } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import InputSelect, { TOptionItem } from "@/components/ui/myForm/InputSelect";
+import MyCheckbox from "@/components/ui/myForm/MyCheckbox";
 import MyForm from "@/components/ui/myForm/MyForm";
 import MyInput from "@/components/ui/myForm/MyInput";
+import MyRadioBox, { TRadioBoxData } from "@/components/ui/myForm/MyRadioBox";
 
 const genderOptions: TOptionItem[] = [
   {
@@ -14,6 +16,20 @@ const genderOptions: TOptionItem[] = [
   {
     value: "female",
     label: "Female",
+  },
+];
+const typeOptions: TRadioBoxData[] = [
+  {
+    value: "all",
+    label: "All new messages",
+  },
+  {
+    value: "mentions",
+    label: "Direct messages and mentions",
+  },
+  {
+    value: "none",
+    label: "Nothing",
   },
 ];
 
@@ -27,9 +43,10 @@ function Home() {
       <MyForm onSubmit={onSubmit}>
         <div className="space-y-8">
           <MyInput type="text" name="name" placeholder="Name" />
-          <MyInput type="text" name="desc" placeholder="Description" />
           <MyInput type="number" name="age" placeholder="Age" />
           <InputSelect name="gender" options={genderOptions} />
+          <MyCheckbox name="terms" />
+          <MyRadioBox name="notification" options={typeOptions} />
         </div>
         <div className="mt-6">
           <Button type="submit" variant={"secondary"}>

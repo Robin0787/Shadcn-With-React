@@ -3,7 +3,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -17,9 +16,10 @@ export type TOptionItem = {
 export type TInputSelectProps = {
   name: string;
   options: TOptionItem[];
+  placeholder?: string;
 };
 
-const InputSelect = ({ name, options }: TInputSelectProps) => {
+const InputSelect = ({ name, options, placeholder }: TInputSelectProps) => {
   return (
     <FormField
       name={name}
@@ -27,13 +27,17 @@ const InputSelect = ({ name, options }: TInputSelectProps) => {
         <FormItem>
           <Select onValueChange={field.onChange}>
             <SelectTrigger className="w-[280px]">
-              <SelectValue placeholder="Select a timezone" />
+              <SelectValue
+                placeholder={placeholder || `Select a ${name}`}
+                className="capitalize"
+              />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>North America</SelectLabel>
                 {options.map((option) => (
-                  <SelectItem value={option.value}>{option.label}</SelectItem>
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
                 ))}
               </SelectGroup>
             </SelectContent>
