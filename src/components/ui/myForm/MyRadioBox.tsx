@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-type MyRadioBoxProps = {
+type TMyRadioBoxProps = {
   name: string;
   options: TRadioBoxData[];
 };
@@ -17,7 +17,7 @@ export type TRadioBoxData = {
   label: string;
 };
 
-const MyRadioBox = ({ name, options }: MyRadioBoxProps) => {
+const MyRadioBox = ({ name, options }: TMyRadioBoxProps) => {
   return (
     <FormField
       name={name}

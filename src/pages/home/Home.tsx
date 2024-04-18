@@ -4,6 +4,7 @@ import { FieldValues } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import InputSelect, { TOptionItem } from "@/components/ui/myForm/InputSelect";
 import MyCheckbox from "@/components/ui/myForm/MyCheckbox";
+import MyDatePicker from "@/components/ui/myForm/MyDatePicker";
 import MyForm from "@/components/ui/myForm/MyForm";
 import MyInput from "@/components/ui/myForm/MyInput";
 import MyRadioBox, { TRadioBoxData } from "@/components/ui/myForm/MyRadioBox";
@@ -47,6 +48,7 @@ function Home() {
           <InputSelect name="gender" options={genderOptions} />
           <MyCheckbox name="terms" />
           <MyRadioBox name="notification" options={typeOptions} />
+          <MyDatePicker name="date" />
         </div>
         <div className="mt-6">
           <Button type="submit" variant={"secondary"}>
