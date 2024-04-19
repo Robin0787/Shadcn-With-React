@@ -22,10 +22,11 @@ function Calendar({
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
-        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+        months: "flex flex-col sm:flex-row space-y-3 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
-        caption: "flex justify-center pt-1 relative items-center",
-        caption_label: "text-sm font-medium",
+        caption: "py-3 flex flex-col gap-2",
+        caption_label:
+          "text-sm font-medium absolute top-2 left-1/2 -translate-x-1/2 ",
         nav: "space-x-1 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
@@ -54,6 +55,7 @@ function Calendar({
         day_range_middle:
           "aria-selected:bg-slate-100 aria-selected:text-slate-900 dark:aria-selected:bg-slate-800 dark:aria-selected:text-slate-50",
         day_hidden: "invisible",
+        caption_dropdowns: "border mt-2",
         ...classNames,
       }}
       components={{
@@ -67,12 +69,12 @@ function Calendar({
             }));
             return (
               <Select>
-                <SelectTrigger className="cursor-pointer w-[120px] border rounded flex justify-center items-center gap-1">
+                <SelectTrigger className="cursor-pointer w-[100px] border rounded flex justify-center items-center gap-2">
                   <SelectValue placeholder="Months" />
                   <TiArrowUnsorted size={18} className="text-gray-400" />
                 </SelectTrigger>
 
-                <SelectContent className="bg-white z-50 rounded ring-2 ring-gray-300 w-[80px]">
+                <SelectContent className="bg-white z-50 rounded border border-t-0 w-[100px] ">
                   {selectItems.map((item, index) => (
                     <SelectItem
                       key={index}
@@ -86,8 +88,30 @@ function Calendar({
               </Select>
             );
           } else if (props.name === "years") {
-            console.log(props.children);
-            return <div>Years</div>;
+            const selectItems = Array.from({ length: 12 }, (_, i) => ({
+              value: i.toString(),
+              label: format(setMonth(new Date(), i), "MMM"),
+            }));
+            return (
+              <Select>
+                <SelectTrigger className="cursor-pointer w-[100px] border rounded flex justify-center items-center gap-2">
+                  <SelectValue placeholder="Years" />
+                  <TiArrowUnsorted size={18} className="text-gray-400" />
+                </SelectTrigger>
+
+                <SelectContent className="bg-white z-50 rounded border border-t-0 w-[100px] ">
+                  {selectItems.map((item, index) => (
+                    <SelectItem
+                      key={index}
+                      value={item.value}
+                      className="flex justify-center items-center hover:bg-gray-400 rounded-md duration-300 cursor-pointer text-center"
+                    >
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            );
           }
           return null;
         },
