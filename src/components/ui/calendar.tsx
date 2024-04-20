@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as React from "react";
-import { DayPicker } from "react-day-picker";
+import { DayPicker, useDayPicker } from "react-day-picker";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -62,6 +62,8 @@ function Calendar({
         IconLeft: () => <ChevronLeft className="h-4 w-4" />,
         IconRight: () => <ChevronRight className="h-4 w-4" />,
         Dropdown: ({ ...props }) => {
+          const { fromDate, fromMonth, fromYear, toDate, toMonth, toYear } =
+            useDayPicker();
           if (props.name === "months") {
             const selectItems = Array.from({ length: 12 }, (_, i) => ({
               value: i.toString(),
@@ -74,7 +76,7 @@ function Calendar({
                   <TiArrowUnsorted size={18} className="text-gray-400" />
                 </SelectTrigger>
 
-                <SelectContent className="bg-white z-50 rounded border border-t-0 w-[100px] ">
+                <SelectContent className="bg-white z-50 rounded border border-t-0 w-[100px] h-[290px] overflow-y-scroll">
                   {selectItems.map((item, index) => (
                     <SelectItem
                       key={index}
@@ -88,18 +90,29 @@ function Calendar({
               </Select>
             );
           } else if (props.name === "years") {
-            const selectItems = Array.from({ length: 12 }, (_, i) => ({
-              value: i.toString(),
-              label: format(setMonth(new Date(), i), "MMM"),
-            }));
+            const earliestYear =
+              fromYear || fromMonth?.getFullYear() || fromDate?.getFullYear();
+            const latestYear =
+              toYear || toMonth?.getFullYear() || toDate?.getFullYear();
+
+            let selectItems: { label: string; value: string }[] = [];
+
+            if (earliestYear && latestYear) {
+              const yearsLength = latestYear - earliestYear + 1;
+
+              selectItems = Array.from({ length: yearsLength }, (_, i) => ({
+                label: (earliestYear + i).toString(),
+                value: (earliestYear + i).toString(),
+              }));
+            }
+
             return (
               <Select>
                 <SelectTrigger className="cursor-pointer w-[100px] border rounded flex justify-center items-center gap-2">
                   <SelectValue placeholder="Years" />
                   <TiArrowUnsorted size={18} className="text-gray-400" />
                 </SelectTrigger>
-
-                <SelectContent className="bg-white z-50 rounded border border-t-0 w-[100px] ">
+                <SelectContent className="bg-white z-50 rounded border border-t-0 w-[100px] h-[260px] overflow-y-scroll">
                   {selectItems.map((item, index) => (
                     <SelectItem
                       key={index}
