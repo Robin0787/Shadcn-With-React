@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as React from "react";
-import { DayPicker, useDayPicker } from "react-day-picker";
+import { DayPicker, useDayPicker, useNavigation } from "react-day-picker";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -24,9 +24,9 @@ function Calendar({
       classNames={{
         months: "flex flex-col sm:flex-row space-y-3 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
-        caption: "py-3 flex flex-col gap-2",
+        caption: "pt-2",
         caption_label:
-          "text-sm font-medium absolute top-2 left-1/2 -translate-x-1/2 ",
+          "text-sm font-medium absolute top-2 left-1/2 -translate-x-1/2 hidden",
         nav: "space-x-1 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
@@ -55,7 +55,7 @@ function Calendar({
         day_range_middle:
           "aria-selected:bg-slate-100 aria-selected:text-slate-900 dark:aria-selected:bg-slate-800 dark:aria-selected:text-slate-50",
         day_hidden: "invisible",
-        caption_dropdowns: "border mt-2",
+        caption_dropdowns: "flex gap-2 justify-center items-center",
         ...classNames,
       }}
       components={{
@@ -64,30 +64,40 @@ function Calendar({
         Dropdown: ({ ...props }) => {
           const { fromDate, fromMonth, fromYear, toDate, toMonth, toYear } =
             useDayPicker();
+          const { goToMonth, currentMonth } = useNavigation();
           if (props.name === "months") {
             const selectItems = Array.from({ length: 12 }, (_, i) => ({
               value: i.toString(),
               label: format(setMonth(new Date(), i), "MMM"),
             }));
             return (
-              <Select>
-                <SelectTrigger className="cursor-pointer w-[100px] border rounded flex justify-center items-center gap-2">
-                  <SelectValue placeholder="Months" />
-                  <TiArrowUnsorted size={18} className="text-gray-400" />
-                </SelectTrigger>
+              <div className="w-full">
+                <Select
+                  onValueChange={(newValue) => {
+                    const newDate = new Date(currentMonth);
+                    newDate.setMonth(parseInt(newValue));
+                    goToMonth(newDate);
+                  }}
+                  value={props.value?.toString()}
+                >
+                  <SelectTrigger className="cursor-pointer w-full border rounded flex justify-center items-center gap-2">
+                    <SelectValue placeholder={format(currentMonth, "MMM")} />
+                    <TiArrowUnsorted size={18} className="text-gray-400" />
+                  </SelectTrigger>
 
-                <SelectContent className="bg-white z-50 rounded border border-t-0 w-[100px] h-[290px] overflow-y-scroll">
-                  {selectItems.map((item, index) => (
-                    <SelectItem
-                      key={index}
-                      value={item.value}
-                      className="flex justify-center items-center hover:bg-gray-400 rounded-md duration-300 cursor-pointer text-center"
-                    >
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  <SelectContent className="bg-white z-50 rounded border border-t-0 w-[118px] h-[290px] overflow-y-scroll listScrollbar">
+                    {selectItems.map((item, index) => (
+                      <SelectItem
+                        key={index}
+                        value={item.value}
+                        className="flex justify-center items-center hover:bg-gray-400 rounded-md duration-300 cursor-pointer text-center"
+                      >
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             );
           } else if (props.name === "years") {
             const earliestYear =
@@ -107,23 +117,32 @@ function Calendar({
             }
 
             return (
-              <Select>
-                <SelectTrigger className="cursor-pointer w-[100px] border rounded flex justify-center items-center gap-2">
-                  <SelectValue placeholder="Years" />
-                  <TiArrowUnsorted size={18} className="text-gray-400" />
-                </SelectTrigger>
-                <SelectContent className="bg-white z-50 rounded border border-t-0 w-[100px] h-[260px] overflow-y-scroll">
-                  {selectItems.map((item, index) => (
-                    <SelectItem
-                      key={index}
-                      value={item.value}
-                      className="flex justify-center items-center hover:bg-gray-400 rounded-md duration-300 cursor-pointer text-center"
-                    >
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="w-full">
+                <Select
+                  onValueChange={(newValue) => {
+                    const newDate = new Date(currentMonth);
+                    newDate.setFullYear(parseInt(newValue));
+                    goToMonth(newDate);
+                  }}
+                  value={props.value?.toString()}
+                >
+                  <SelectTrigger className="cursor-pointer w-full border rounded flex justify-center items-center gap-2">
+                    <SelectValue placeholder={currentMonth.getFullYear()} />
+                    <TiArrowUnsorted size={18} className="text-gray-400" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white z-50 rounded border border-t-0 w-[118px] h-[260px] overflow-y-scroll listScrollbar">
+                    {selectItems.map((item, index) => (
+                      <SelectItem
+                        key={index}
+                        value={item.value}
+                        className="flex justify-center items-center hover:bg-gray-400 rounded-md duration-300 cursor-pointer text-center"
+                      >
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             );
           }
           return null;

@@ -1,6 +1,4 @@
 "use client";
-import { FieldValues } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import InputSelect, { TOptionItem } from "@/components/ui/myForm/InputSelect";
 import MyCheckbox from "@/components/ui/myForm/MyCheckbox";
@@ -8,6 +6,8 @@ import MyDatePicker from "@/components/ui/myForm/MyDatePicker";
 import MyForm from "@/components/ui/myForm/MyForm";
 import MyInput from "@/components/ui/myForm/MyInput";
 import MyRadioBox, { TRadioBoxData } from "@/components/ui/myForm/MyRadioBox";
+import moment from "moment";
+import { FieldValues } from "react-hook-form";
 
 const genderOptions: TOptionItem[] = [
   {
@@ -36,6 +36,8 @@ const typeOptions: TRadioBoxData[] = [
 
 function Home() {
   const onSubmit = (data: FieldValues) => {
+    const momentDate = moment(data.date).format("DD-MM-YYYY");
+    data.date = momentDate;
     console.log(data);
   };
 

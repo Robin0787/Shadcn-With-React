@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.listScrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.listScrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(105, 105, 105, 0.363);
+  border-radius: 10px;
+}
+.listScrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
